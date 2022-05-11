@@ -1,0 +1,18 @@
+.site-login-background{
+    background-image: url("../../image/background.jpg");
+}
+
+.site-login-card{
+    position: absolute;
+    left: 50%;
+    top: 47%;
+    transform: translate(-50%, -50%);
+}
+
+.site-login-footer{
+    color: azure;
+    position: absolute;
+    left: 50%;
+    top: 93%;
+    transform: translate(-50%, -50%);
+}

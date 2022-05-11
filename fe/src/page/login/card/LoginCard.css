@@ -1,0 +1,22 @@
+.ant-card-head-title{
+    font-weight: bold;
+    font-size: 25px;
+    text-align: center;
+}
+
+.login-card{
+    width: 400px;
+}
+
+.register-card{
+    width: 500px;
+}
+
+.login-form-button {
+    width: 100%;
+}
+
+.register-form-button {
+    position: absolute;
+    left: 55%;
+}
