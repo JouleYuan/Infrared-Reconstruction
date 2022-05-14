@@ -106,6 +106,3 @@ def SfM(project_id, algo) -> bool:
     pSequential.wait()
 
     return True
-
-
-SfM(5, "sequential")

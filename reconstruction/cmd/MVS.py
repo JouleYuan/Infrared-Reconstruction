@@ -1,5 +1,7 @@
 import os
 import subprocess
+import glob
+import shutil
 
 from const import ROOT_PATH, MVS_PATH, OPENMVS_BIN
 
@@ -16,6 +18,11 @@ def MVS(project_id) -> bool:
     pSequentialDensify = subprocess.Popen( [os.path.join(OPENMVS_BIN, "ReconstructMesh"),  mvs_dir + "/scene_dense.mvs"] )
     pSequentialDensify.wait()
 
-    return True
+    log_file_list = glob.glob("./*.log")
+    dmap_file_list = glob.glob("./*.dmap")
+    for log_file in log_file_list:
+        shutil.rmtree(log_file, ignore_errors=True)
+    for dmap_file in dmap_file_list:
+        shutil.rmtree(dmap_file, ignore_errors=True)
 
-MVS(5)
+    return True

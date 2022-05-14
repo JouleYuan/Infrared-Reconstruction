@@ -6,13 +6,13 @@ import proto.reconstruction_pb2_grpc as rpc
 
 class Greeter(rpc.ReconstructionServicer):
     def SfM(self, request, context):
-        return pb.SfMReply(ok=request.userid==1)
+        return pb.SfMReply(ok=request.project_id==1)
 
     def MVS(self, request, context):
-        return pb.MVSReply(ok=request.userid==1)
+        return pb.MVSReply(ok=request.project_id==1)
 
     def Texture(self, request, context):
-        return pb.TextureReply(ok=request.userid==1)
+        return pb.TextureReply(ok=request.project_id==1)
  
 
 def serve():
