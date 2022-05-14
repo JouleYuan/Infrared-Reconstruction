@@ -9,15 +9,16 @@ service Reconstruction {
 }
 
 message SfMRequest {
-    optional uint32 userid = 1;
+    optional uint32 project_id = 1;
+    optional string algo = 2;
 }
 
 message MVSRequest {
-    optional uint32 userid = 1;
+    optional uint32 project_id = 1;
 }
 
 message TextureRequest {
-    optional uint32 userid = 1;
+    optional uint32 project_id = 1;
 }
 
 message SfMReply {
