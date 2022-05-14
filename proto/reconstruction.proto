@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package reconstruction;
+
+service Reconstruction {
+    rpc SfM (SfMRequest) returns (SfMReply) {}
+    rpc MVS (MVSRequest) returns (MVSReply) {}
+    rpc Texture (TextureRequest) returns (TextureReply) {}
+}
+
+message SfMRequest {
+    optional uint32 userid = 1;
+}
+
+message MVSRequest {
+    optional uint32 userid = 1;
+}
+
+message TextureRequest {
+    optional uint32 userid = 1;
+}
+
+message SfMReply {
+    optional bool ok = 1;
+}
+
+message MVSReply {
+    optional bool ok = 1;
+}
+
+message TextureReply {
+    optional bool ok = 1;
+}

@@ -1,1 +1,4 @@
 .idea
+data
+*.log
+*.dmap
