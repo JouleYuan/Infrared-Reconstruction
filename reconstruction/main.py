@@ -1,36 +1,11 @@
-from concurrent import futures
- 
-import grpc
-import proto.reconstruction_pb2 as pb
-import proto.reconstruction_pb2_grpc as rpc
-
-class Greeter(rpc.ReconstructionServicer):
-    def SfM(self, request, context):
-        return pb.SfMReply(ok=request.project_id==1)
-
-    def MVS(self, request, context):
-        return pb.MVSReply(ok=request.project_id==1)
-
-    def Texture(self, request, context):
-        return pb.TextureReply(ok=request.project_id==1)
- 
-
-def serve():
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
-    rpc.add_ReconstructionServicer_to_server(Greeter(), server)
-    server.add_insecure_port('[::]:50051')
-    server.start()
-    server.wait_for_termination()
- 
-if __name__ == '__main__':
-    serve()
-
-"""from werkzeug.serving import run_simple
-from werkzeug.urls import url_parse
+from werkzeug.serving import run_simple
 from werkzeug.wrappers import Request, Response
 from werkzeug.routing import Map, Rule
 from werkzeug.exceptions import HTTPException, NotFound
-from werkzeug.utils import redirect
+
+from cmd.MVS import MVS
+from cmd.SfM import SfM
+from cmd.texture import texture
 
 class WSGI(object):
 
@@ -42,13 +17,22 @@ class WSGI(object):
         ])
 
     def on_sfm(self, request):
-        return Response('sfm\n')
+        json = request.get_json()
+        if SfM(json["project_id"], "sequential"):
+            return Response("ok")
+        return Response("not ok")
 
     def on_mvs(self, request):
-        return Response('mvs\n')
+        json = request.get_json()
+        if MVS(json["project_id"]):
+            return Response("ok")
+        return Response("not ok")
 
     def on_texture(self, request):
-        return Response('texture\n')
+        json = request.get_json()
+        if texture(json["project_id"]):
+            return Response("ok")
+        return Response("not ok")
 
     def dispatch_request(self, request):
         adapter = self.url_map.bind_to_environ(request.environ)
@@ -73,4 +57,4 @@ def create_app():
 
 if __name__ == '__main__':
     app = create_app()
-    run_simple('127.0.0.1', 5000, app, use_debugger=True, use_reloader=True)"""
+    run_simple('0.0.0.0', 8080, app, use_debugger=True, use_reloader=True)

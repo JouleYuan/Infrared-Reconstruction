@@ -48,6 +48,18 @@ func (dm *ProjectDM) UpdateProjectNameByProjectId() (err error) {
 	return
 }
 
+func (dm *ProjectDM) UpdateStatusByProjectId() (err error) {
+	res := db.Model(dm.project).Where("project_id = ?", dm.project.ProjectId).Update("status", dm.project.ProjectName)
+	if err = res.Error; err != nil {
+		return
+	}
+	if res.RowsAffected > 1 {
+		err = resultInvalidError
+		return
+	}
+	return
+}
+
 func (dm *ProjectDM) DeleteProjectByProjectId() (err error) {
 	res := db.Delete(&Project{}, dm.project.ProjectId)
 	if err = res.Error; err != nil {
