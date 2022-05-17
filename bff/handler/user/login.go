@@ -31,7 +31,7 @@ func Login(ctx *gin.Context) {
 		}
 	}
 
-	ctx.SetCookie("userid", strconv.Itoa(int(user.Userid)), 60*60, "/", "localhost", true, true)
+	ctx.SetCookie("userid", strconv.Itoa(int(user.Userid)), 60*60, "/", "124.221.118.117:8080", true, true)
 	ctx.JSON(http.StatusOK, gin.H{
 		"ok": ok,
 	})
