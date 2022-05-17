@@ -1,9 +1,28 @@
 import React from 'react';
 import { Form, Input, Button, Card, message } from 'antd';
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
+import axios from 'axios';
 import "./LoginCard.css"
 
 function LoginCard(){
+    const onFinish = (values) => {
+        console.log('Received values of form: ', values);
+        axios({
+            method: 'post',
+            baseURL: "http://localhost:8080",
+            url: '/account/login',
+            data: {
+                'email': values.email,
+                'password': values.password,
+            },
+            header:{
+                'Content-Type':'application/json',
+            },
+        }).then(function(response){
+            console.log(response)
+
+        });
+    };
 
     return(
         <>
@@ -11,6 +30,7 @@ function LoginCard(){
                 <Form
                     name="normal_login"
                     className="login-form"
+                    onFinish={onFinish}
                 >
                     <Form.Item
                         name="email"

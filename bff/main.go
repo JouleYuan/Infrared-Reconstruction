@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"log"
 	"reconstruction/config"
@@ -19,6 +20,14 @@ func main() {
 	dao.Init(mysqlCnf.Username, mysqlCnf.Password, mysqlCnf.Host, mysqlCnf.Port, mysqlCnf.Schema)
 
 	router := gin.Default()
+
+	router.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"*"},
+		AllowMethods:     []string{"*"},
+		AllowHeaders:     []string{"*"},
+		ExposeHeaders:    []string{"*"},
+		AllowCredentials: true,
+	}))
 
 	router.POST("/account/login", user.Login)
 	router.POST("/account/create_user", user.CreateUser)
