@@ -1,6 +1,6 @@
 import os
 
-ROOT_PATH = os.path.abspath()
+ROOT_PATH = os.path.abspath("data")
 VISIBLE_PATH = "image/visible"
 INFRARED_PATH = "image/infrared"
 SFM_PATH = "SfM"
