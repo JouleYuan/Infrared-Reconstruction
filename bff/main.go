@@ -26,7 +26,6 @@ func main() {
 		AllowMethods:     []string{"*"},
 		AllowHeaders:     []string{"*"},
 		ExposeHeaders:    []string{"*"},
-		AllowCredentials: true,
 	}))
 
 	router.POST("/account/login", user.Login)
