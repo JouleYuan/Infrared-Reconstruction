@@ -21,13 +21,13 @@ func main() {
 	router := gin.Default()
 
 	router.POST("/account/login", user.Login)
-	router.POST("/account/user", user.CreateUser)
-	router.GET("/account/user", user.GetUser)
+	router.POST("/account/create_user", user.CreateUser)
+	router.POST("/account/get_user", user.GetUser)
 
-	router.GET("/project/meta", project.GetProjectList)
-	router.POST("/project/meta", project.CreateProject)
-	router.PUT("/project/meta", project.UpdateProject)
-	router.DELETE("/project/meta", project.DeleteProject)
+	router.POST("/project/get_meta", project.GetProjectList)
+	router.POST("/project/create_meta", project.CreateProject)
+	router.POST("/project/update_meta", project.UpdateProject)
+	router.POST("/project/delete_meta", project.DeleteProject)
 
 	router.GET("/project/detail", reconstruction.GetProjectDetail)
 	router.POST("/project/sfm", reconstruction.SfM)

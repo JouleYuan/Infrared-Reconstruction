@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"reconstruction/dao"
+	"strconv"
 )
 
 func Login(ctx *gin.Context) {
@@ -30,6 +31,7 @@ func Login(ctx *gin.Context) {
 		}
 	}
 
+	ctx.SetCookie("userid", strconv.Itoa(int(user.Userid)), 60*60, "/", "124.221.118.117", true, true)
 	ctx.JSON(http.StatusOK, gin.H{
 		"ok": ok,
 	})
