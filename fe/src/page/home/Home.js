@@ -1,8 +1,11 @@
 import React from 'react';
-import { Layout, Table, Tag, Space, Button } from 'antd';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import {Layout, Table, Tag, Space, Button} from 'antd';
 import Head from "../common/Head";
 import Foot from "../common/Foot";
 import GetWinSize from "../tool/GetWinSize";
+import { useParams } from 'react-router-dom';
 import "../common/Content.css"
 import "./Home.css"
 
@@ -11,7 +14,7 @@ const { Content } = Layout;
 const columns = [
     {
       title: '项目名称',
-      dataIndex: 'name',
+      dataIndex: 'project_name',
       key: 'name',
     },
     {
@@ -20,14 +23,24 @@ const columns = [
       dataIndex: 'status',
       render: status => {
         let color = 'grey';
-        if (status === '运行') {
-            color = 'green';
-        } else if (status === '失败') {
+        let word = '空闲';
+        if (status === 'Success') {
+            color = 'green'
+            word = '成功'
+        } else if (status === 'Running') {
+            color = 'blue';
+            word = '运行'
+        } else if (status === 'Failed') {
             color = 'volcano'
+            word = '失败'
+        }
+        if (status === 'Pending') {
+            color = 'yellow';
+            word = '等待'
         }
         return (
           <Tag color={color} key={status}>
-            {status}
+            {word}
           </Tag>
         );
       },
@@ -35,39 +48,43 @@ const columns = [
     {
       title: '操作',
       key: 'action',
-      render: (text, record) => (
-        <Space size="middle">
-          <a>进入</a>
-          <a>删除</a>
-        </Space>
-      ),
-    },
-  ];
-  
-  const data = [
-    {
-      key: '1',
-      name: '项目1',
-      status: '运行'
-    },
-    {
-        key: '2',
-        name: '项目2',
-        status: '空闲'
+      render: (record) => {
+          console.log(record)
+          return (
+              <Space size="middle">
+                  <a href={"http://localhost:3000/project/" + record.userid + "/" +record.project_id}>进入</a>
+                  <a>删除</a>
+              </Space>
+          )
       },
-      {
-        key: '3',
-        name: '项目3',
-        status: '失败'
-      },
+    },
   ];
 
 function Home() {
+    const [data, setData] = useState([]);
+    const { id } = useParams();
+
+    useEffect(()=>{
+        axios({
+            method: 'post',
+            baseURL: "http://124.221.118.117:8080",
+            url: '/project/get_meta',
+            data: {
+                'userid': parseInt(id),
+            },
+            header:{
+                'Content-Type':'application/json',
+            },
+        }).then(function(response){
+            setData(response.data.result)
+        })
+    },[])
+
     const size = GetWinSize();
 
     return (
         <Layout style={{minHeight: size.height}}>
-            <Head id={"123"}/>
+            <Head id={id}/>
             <Content className="content-layout">
                 <Button type="primary" className='create-project-button'>创建项目</Button>
                 <Table columns={columns} dataSource={data} />

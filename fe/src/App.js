@@ -16,8 +16,8 @@ function App() {
         <ConfigProvider locale={zhCN}>
             <Router>
                 <Routes>
-                    <Route exact path="/" element={<Home/>}/>
-                    <Route path="/project/:id" element={<Project/>}/>
+                    <Route exact path="/home/:id" element={<Home/>}/>
+                    <Route path="/project/:userid/:id" element={<Project/>}/>
                     <Route exact path="/login" element={<Login card="login"/>}/>
                     <Route exact path="/registration" element={<Login card="registration"/>}/>
                 </Routes>

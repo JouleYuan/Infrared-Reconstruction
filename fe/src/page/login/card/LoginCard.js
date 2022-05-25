@@ -6,10 +6,9 @@ import "./LoginCard.css"
 
 function LoginCard(){
     const onFinish = (values) => {
-        console.log('Received values of form: ', values);
         axios({
             method: 'post',
-            baseURL: "http://localhost:8080",
+            baseURL: "http://124.221.118.117:8080",
             url: '/account/login',
             data: {
                 'email': values.email,
@@ -19,8 +18,10 @@ function LoginCard(){
                 'Content-Type':'application/json',
             },
         }).then(function(response){
-            console.log(response)
-
+            if(response.data.ok === true) window.location.href = "/home/" + response.data.userid;
+            else {
+                message.error('邮箱或密码错误');
+            }
         });
     };
 

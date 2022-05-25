@@ -28,6 +28,7 @@ func CreateUser(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{
-		"ok": ok,
+		"result": dm.GetUser(),
+		"ok":     ok,
 	})
 }

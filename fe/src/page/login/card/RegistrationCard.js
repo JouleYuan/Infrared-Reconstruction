@@ -1,15 +1,36 @@
 import React from 'react';
 import { Form, Input, Card, Button, message } from 'antd';
 import FormItemLayout from "../../tool/FormItemLayout";
+import axios from 'axios';
 import "./LoginCard.css"
 
 function RegistrationCard(){
+    const onFinish = (values) => {
+        axios({
+            method: 'post',
+            baseURL: "http://124.221.118.117:8080",
+            url: '/account/create_user',
+            data: {
+                'name': values.name,
+                'email': values.email,
+                'password': values.password,
+            },
+            header:{
+                'Content-Type':'application/json',
+            },
+        }).then(function(response){
+            if(response.data.ok === true) window.location.href = "/home/" + response.data.userid;
+            else message.error('用户名或邮箱重复，请尝试其它用户名或邮箱');
+        });
+    };
+
     return (
         <>
             <Card className="register-card" title="新用户注册">
                 <Form
                     {...FormItemLayout(24, 4, 24, 20)}
                     name="register"
+                    onFinish={onFinish}
                 >
                     <Form.Item
                         name="name"
