@@ -102,9 +102,11 @@ function Project() {
                         'Content-Type':'application/json',
                     },
                 }).then(function(response){
-                    if (cmd === 'visible') setVisible(getUploadData(response.data.visible_image))
-                    if (cmd === 'infrared') setInfrared(getUploadData(response.data.infrared_image))
+                    if (cmd === 'visible') setVisible(getUploadData(response.data.visible_image, 'image/visible'))
+                    if (cmd === 'infrared') setInfrared(getUploadData(response.data.infrared_image, 'image/infrared'))
                 })
+            } else {
+                message.error("上传失败")
             }
         })
     }
@@ -118,6 +120,45 @@ function Project() {
         const {file} = options
         onUpload(file, 'infrared')
     }
+
+    const onRemove = (file, type, url) => {
+        axios({
+            method: 'post',
+            baseURL: "http://65.52.163.88:8080",
+            url: '/file/remove',
+            data: {
+                'path': 'data/' + url + "/" + id + '/' + file.name,
+            },
+            header:{
+                'Content-Type':'application/json',
+            },
+        }).then(function(response){
+            if(response.data.ok===true){
+                message.success("删除成功")
+                axios({
+                    method: 'post',
+                    baseURL: "http://65.52.163.88:8080",
+                    url: '/project/detail',
+                    data: {
+                        'project_id': parseInt(id),
+                    },
+                    header:{
+                        'Content-Type':'application/json',
+                    },
+                }).then(function(response){
+                    if(type === "visible") setVisible(getUploadData(response.data.visible_image, 'image/visible'))
+                    if(type === "infrared") setInfrared(getUploadData(response.data.infrared_image, 'image/infrared'))
+                    if(type === "model") setModel(getUploadData(response.data.model_list, 'MVS'))
+                })
+            }else{
+                message.error("删除失败")
+            }
+        })
+    }
+
+    const onRemoveVisible = (file) => onRemove(file, "visible", "image/visible")
+    const onRemoveInfrared = (file) => onRemove(file, "infrared", "image/infrared")
+    const onRemoveModel = (file) => onRemove(file, "model", "MVS")
 
     const StatusTag = (props) => {
         let color = 'grey';
@@ -211,19 +252,19 @@ function Project() {
                 <Row justify="space-around" className='project-row'>
                     <Col span={5} className='project-col'>
                         <Title level={3}>可见光图片</Title>
-                        <Upload customRequest={uploadVisible} fileList={visible}>
+                        <Upload customRequest={uploadVisible} onRemove={onRemoveVisible} fileList={visible}>
                             <Button icon={<UploadOutlined />}>上传</Button>
                         </Upload>
                     </Col>
                     <Col span={5} className='project-col'>
                         <Title level={3}>红外光图片</Title>
-                        <Upload customRequest={uploadInfrared} fileList={infrared}>
+                        <Upload customRequest={uploadInfrared} onRemove={onRemoveInfrared} fileList={infrared}>
                             <Button icon={<UploadOutlined />}>上传</Button>
                         </Upload>
                     </Col>
                     <Col span={5} className='project-col'>
                         <Title level={3}>模型文件</Title>
-                        <Upload fileList={model} />
+                        <Upload fileList={model} onRemove={onRemoveModel} />
                     </Col>
                 </Row>
             </Content>
