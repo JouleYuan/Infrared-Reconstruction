@@ -32,6 +32,6 @@ func Login(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, gin.H{
 		"ok":     ok,
-		"userid": user.Userid,
+		"userid": dm.GetUser().Userid,
 	})
 }

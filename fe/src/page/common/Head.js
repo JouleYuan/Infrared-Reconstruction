@@ -28,19 +28,23 @@ function Head(props) {
         })
     },[])
 
+    const onExit = () => {
+        window.location.href = "/login";
+    };
+
     const MenuItems = (isLogin) => {
         if(isLogin) return (
-            <Menu.Item key="exit" icon={<PoweroffOutlined/>}>退出登录</Menu.Item>
+            <Menu.Item key="exit" icon={<PoweroffOutlined/>} onClick={onExit}>退出登录</Menu.Item>
         );
         else return (
-            <Menu.Item key="login" icon={<LoginOutlined/>}>登录</Menu.Item>
+            <Menu.Item key="login" icon={<LoginOutlined/>} onClick={onExit}>登录</Menu.Item>
         )
     };
 
     return(
         <Header className="header-layout">
             <Menu theme="light" mode="horizontal">
-                <a href={"/"}>
+                <a href={"/home/" + props.id}>
                     <Avatar className="header-avatar" size="large" icon={<UserOutlined/>}/>
                 </a>
                 <SubMenu key="SubMenu" icon={<DownOutlined/>} title={username} className="header-username">

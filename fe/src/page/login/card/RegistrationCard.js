@@ -11,7 +11,7 @@ function RegistrationCard(){
             baseURL: "http://124.221.118.117:8080",
             url: '/account/create_user',
             data: {
-                'name': values.name,
+                'username': values.name,
                 'email': values.email,
                 'password': values.password,
             },
