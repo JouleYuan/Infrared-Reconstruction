@@ -55,11 +55,11 @@ func (dm *ProjectDM) UpdateProjectNameByProjectId() (err error) {
 }
 
 func (dm *ProjectDM) UpdateStatusByProjectId() (err error) {
-	res := db.Model(dm.project).Where("project_id = ?", dm.project.ProjectId).Update("status", dm.project.ProjectName)
+	res := db.Model(dm.project).Where("project_id = ?", dm.project.ProjectId).Update("status", dm.project.Status)
 	if err = res.Error; err != nil {
 		return
 	}
-	if res.RowsAffected > 1 {
+	if res.RowsAffected != 1 {
 		err = resultInvalidError
 		return
 	}

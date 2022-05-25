@@ -26,6 +26,7 @@ func Start() {
 		setStatus(cmd.ProjectId, "Running")
 		if reconstruction(cmd) {
 			setStatus(cmd.ProjectId, "Success")
+		} else {
 			setStatus(cmd.ProjectId, "Failed")
 		}
 	}
