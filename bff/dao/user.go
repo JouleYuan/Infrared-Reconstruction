@@ -1,14 +1,20 @@
 package dao
 
 type UserDM struct {
-	user *User
+	isSet bool
+	user  *User
 }
 
 func (dm *UserDM) GetUser() User {
-	return *dm.user
+	if dm.isSet {
+		return *dm.user
+	} else {
+		return User{}
+	}
 }
 
 func (dm *UserDM) SetUser(user User) {
+	dm.isSet = true
 	dm.user = &user
 }
 

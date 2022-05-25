@@ -1,15 +1,21 @@
 package dao
 
 type ProjectDM struct {
+	isSet       bool
 	project     *Project
 	projectList []Project
 }
 
 func (dm *ProjectDM) GetProject() Project {
-	return *dm.project
+	if dm.isSet {
+		return *dm.project
+	} else {
+		return Project{}
+	}
 }
 
 func (dm *ProjectDM) SetProject(project Project) {
+	dm.isSet = true
 	dm.project = &project
 }
 
