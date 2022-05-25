@@ -23,6 +23,7 @@ func SfM(ctx *gin.Context) {
 		cmd := client.Cmd{
 			Type:      client.CmdTypeSfm,
 			ProjectId: project.ProjectId,
+			Lock:      make(chan bool, 1),
 		}
 
 		select {
@@ -34,6 +35,7 @@ func SfM(ctx *gin.Context) {
 				log.Println(err.Error())
 				ok = false
 			}
+			cmd.Lock <- ok
 		default:
 			ok = false
 		}

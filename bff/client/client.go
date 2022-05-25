@@ -12,6 +12,7 @@ import (
 type Cmd struct {
 	Type      string
 	ProjectId uint
+	Lock      chan bool
 }
 
 const CmdTypeSfm = "sfm"
@@ -23,11 +24,14 @@ var CmdQueue = make(chan *Cmd, 100)
 func Start() {
 	for true {
 		cmd := <-CmdQueue
-		setStatus(cmd.ProjectId, "Running")
-		if reconstruction(cmd) {
-			setStatus(cmd.ProjectId, "Success")
-		} else {
-			setStatus(cmd.ProjectId, "Failed")
+		proceed := <-cmd.Lock
+		if proceed {
+			setStatus(cmd.ProjectId, "Running")
+			if reconstruction(cmd) {
+				setStatus(cmd.ProjectId, "Success")
+			} else {
+				setStatus(cmd.ProjectId, "Failed")
+			}
 		}
 	}
 }

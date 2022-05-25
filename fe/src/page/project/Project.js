@@ -35,43 +35,65 @@ function Project() {
     }
 
     useEffect(()=>{
-        axios({
-            method: 'post',
-            baseURL: "http://124.221.118.117:8080",
-            url: '/project/get_meta',
-            data: {
-                'userid': parseInt(userid),
-            },
-            header:{
-                'Content-Type':'application/json',
-            },
-        }).then(function(response){
-            for (let i = 0; i < response.data.result.length; i++) {
-                if (response.data.result[i].project_id === parseInt(id)) {
-                    setTitle(response.data.result[i].project_name)
-                    setStatus(response.data.result[i].status)
-                    break
+        const updateMeta = () => {
+            axios({
+                method: 'post',
+                baseURL: "http://124.221.118.117:8080",
+                url: '/project/get_meta',
+                data: {
+                    'userid': parseInt(userid),
+                },
+                header:{
+                    'Content-Type':'application/json',
+                },
+            }).then(function(response){
+                for (let i = 0; i < response.data.result.length; i++) {
+                    if (response.data.result[i].project_id === parseInt(id)) {
+                        setTitle(response.data.result[i].project_name)
+                        setStatus(response.data.result[i].status)
+                        break
+                    }
                 }
-            }
-        })
+            })
+        }
+
+        updateMeta();
+        const interval = setInterval(
+            updateMeta,
+            10 * 1000
+        );
+        return () => {
+            clearInterval(interval);
+        };
     },[])
 
     useEffect(()=>{
-        axios({
-            method: 'post',
-            baseURL: "http://65.52.163.88:8080",
-            url: '/project/detail',
-            data: {
-                'project_id': parseInt(id),
-            },
-            header:{
-                'Content-Type':'application/json',
-            },
-        }).then(function(response){
-            setVisible(getUploadData(response.data.visible_image, 'image/visible'))
-            setInfrared(getUploadData(response.data.infrared_image, 'image/infrared'))
-            setModel(getUploadData(response.data.model_list, 'MVS'))
-        })
+        const updateDetail = () => {
+            axios({
+                method: 'post',
+                baseURL: "http://65.52.163.88:8080",
+                url: '/project/detail',
+                data: {
+                    'project_id': parseInt(id),
+                },
+                header:{
+                    'Content-Type':'application/json',
+                },
+            }).then(function(response){
+                setVisible(getUploadData(response.data.visible_image, 'image/visible'))
+                setInfrared(getUploadData(response.data.infrared_image, 'image/infrared'))
+                setModel(getUploadData(response.data.model_list, 'MVS'))
+            })
+        }
+
+        updateDetail();
+        const interval = setInterval(
+            updateDetail,
+            10 * 1000
+        );
+        return () => {
+            clearInterval(interval);
+        };
     },[])
 
     const size = GetWinSize();
@@ -252,13 +274,13 @@ function Project() {
                 <Row justify="space-around" className='project-row'>
                     <Col span={5} className='project-col'>
                         <Title level={3}>可见光图片</Title>
-                        <Upload customRequest={uploadVisible} onRemove={onRemoveVisible} fileList={visible}>
+                        <Upload customRequest={uploadVisible} onRemove={onRemoveVisible} fileList={visible} multiple={true} accept={".jpg"}>
                             <Button icon={<UploadOutlined />}>上传</Button>
                         </Upload>
                     </Col>
                     <Col span={5} className='project-col'>
                         <Title level={3}>红外光图片</Title>
-                        <Upload customRequest={uploadInfrared} onRemove={onRemoveInfrared} fileList={infrared}>
+                        <Upload customRequest={uploadInfrared} onRemove={onRemoveInfrared} fileList={infrared} multiple={true} accept={".jpg"}>
                             <Button icon={<UploadOutlined />}>上传</Button>
                         </Upload>
                     </Col>

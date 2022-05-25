@@ -17,19 +17,29 @@ function Home() {
     const { id } = useParams();
 
     useEffect(()=>{
-        axios({
-            method: 'post',
-            baseURL: "http://124.221.118.117:8080",
-            url: '/project/get_meta',
-            data: {
-                'userid': parseInt(id),
-            },
-            header:{
-                'Content-Type':'application/json',
-            },
-        }).then(function(response){
-            setData(response.data.result)
-        })
+        const updateProject = () => {
+            axios({
+                method: 'post',
+                baseURL: "http://124.221.118.117:8080",
+                url: '/project/get_meta',
+                data: {
+                    'userid': parseInt(id),
+                },
+                header:{
+                    'Content-Type':'application/json',
+                },
+            }).then(function(response){
+                setData(response.data.result)
+            })
+        }
+        updateProject();
+        const interval = setInterval(
+            updateProject,
+            10 * 1000
+        );
+        return () => {
+            clearInterval(interval);
+        };
     },[])
 
     const size = GetWinSize();

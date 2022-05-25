@@ -23,6 +23,7 @@ func Texture(ctx *gin.Context) {
 		cmd := client.Cmd{
 			Type:      client.CmdTypeTexture,
 			ProjectId: project.ProjectId,
+			Lock:      make(chan bool, 1),
 		}
 
 		select {
@@ -34,6 +35,7 @@ func Texture(ctx *gin.Context) {
 				log.Println(err.Error())
 				ok = false
 			}
+			cmd.Lock <- ok
 		default:
 			ok = false
 		}
