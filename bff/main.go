@@ -19,7 +19,7 @@ func main() {
 	mysqlCnf := conf.MySQL
 
 	dao.Init(mysqlCnf.Username, mysqlCnf.Password, mysqlCnf.Host, mysqlCnf.Port, mysqlCnf.Schema)
-	client.Start()
+	go client.Start()
 
 	router := gin.Default()
 
